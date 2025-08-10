@@ -1,0 +1,41 @@
+:root[data-theme='light'] {
+  --bg-color: #F3F4F8;
+  --bg-search: #F3F7FA;
+  --color-text: #23235F;
+
+  //header page
+  --bg-header-color: #ffff;
+  --header-logo-title: #23235F;
+  --color-mat-icon-header-sarch: #94A2BC;
+  --color-mat-icon-header-notification: #768396;
+  --color-mat-icon-header-arrow: #5250F9;
+
+  //manu navigation page
+
+  --bg-dashboard-color: #FBFAFF;
+  --bg-dashboard-icon: #5F6388;
+  --bg-dashboard-active: #5051F9;
+  --bg-dashboard-active-icon: #FFFFFF;
+}
+
+// 🌙 Dark theme
+:root[data-theme='dark'] {
+  --bg-color: #131517;
+  --bg-search: #050505;
+
+  --color-text: #23235F;
+
+  //header page
+  --bg-header-color: #ffff;
+  --header-logo-title: #FFFFFF;
+  --color-mat-icon-header-sarch: #94A2BC;
+  --color-mat-icon-header-notification: #768396;
+  --color-mat-icon-header-arrow: #5250F9;
+
+  //manu navigation page
+
+  --bg-dashboard-color: #FBFAFF;
+  --bg-dashboard-icon: #5F6388;
+  --bg-dashboard-active: #5051F9;
+  --bg-dashboard-active-icon: #FFFFFF;
+}

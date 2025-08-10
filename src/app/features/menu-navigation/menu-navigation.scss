@@ -1,0 +1,33 @@
+:host{
+  .menu-navigation{
+    display: flex;
+    padding: 14.4rem 2.5rem 0 2.5rem;
+    background: var(--bg-dashboard-color);
+    height: 100%;
+
+    &-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.6rem;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon:before{
+          color: var(--bg-dashboard-icon);
+        }
+
+        &.active{
+          background: var(--bg-dashboard-active);
+
+          mat-icon:before{
+            color: var(--bg-dashboard-active-icon);
+          }
+        }
+      }
+    }
+  }
+}
