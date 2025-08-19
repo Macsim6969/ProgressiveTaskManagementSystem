@@ -1,0 +1,10 @@
+<div class="auth">
+  <div class="auth-container">
+    <h2 class="auth-container-title">Login</h2>
+    <form class="auth-container-form" [formGroup]="loginForm" (submit)="onLogin()">
+      <input formControlName="email" type="email" placeholder="Username" name="username" />
+      <input formControlName="password" type="password" placeholder="Password" name="password" />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>

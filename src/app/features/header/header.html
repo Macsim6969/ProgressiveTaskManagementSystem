@@ -1,34 +1,40 @@
-`<header class="header">
-  <button class="header-logo" type="button" (click)="goToMainPage()">
-    <img class="header-logo-img" src="assets/svg/header/logo.svg" alt="Progressive Task Management System Logo">
-    <span class="header-logo-title"><span class="title-main">Progressive</span> Task Management System</span>
-  </button>
+@let isLoading = isLoading$ | async;
 
-
-  <div class="header-search">
-    <input placeholder="Search anything...">
-    <mat-icon aria-hidden="false" aria-label="Search anything" fontIcon="search"></mat-icon>
-  </div>
-
-  <div class="header-actions">
-    <button mat-icon-button class="header-actions--notification" (click)="toggleThemeMode()">
-      @if (currentThemeMode === 'light') {
-        <mat-icon aria-hidden="false" fontIcon="dark_mode"></mat-icon>
-      } @else {
-        <mat-icon aria-hidden="false" fontIcon="light_mode"></mat-icon>
-      }
+<header class="header">
+  <ng-template [skeletonIf]="isLoading!">
+    <button class="header-logo" type="button" (click)="goToMainPage()">
+      <img class="header-logo-img" src="assets/svg/header/logo.svg" alt="Progressive Task Management System Logo">
+      <span class="header-logo-title"><span class="title-main">Progressive</span> Task Management System</span>
     </button>
-    <button mat-icon-button class="header-actions--notification">
-      <mat-icon aria-hidden="false" fontIcon="notifications"></mat-icon>
-    </button>
+  </ng-template>
 
-    <div class="header-actions--user">
-      <button>
-        <img src="assets/svg/header/header-user.svg" alt="User">
-      </button>
-      <mat-icon aria-hidden="false" fontIcon="keyboard_arrow_down"></mat-icon>
+  <ng-template [skeletonIf]="isLoading!">
+    <div class="header-search">
+      <input placeholder="Search anything...">
+      <mat-icon aria-hidden="false" aria-label="Search anything" fontIcon="search"></mat-icon>
     </div>
+  </ng-template>
 
-  </div>
+  <ng-template [skeletonIf]="isLoading!">
+    <div class="header-actions">
+      <button mat-icon-button class="header-actions--notification" (click)="toggleThemeMode()">
+        @if (currentThemeMode === 'light') {
+          <mat-icon aria-hidden="false" fontIcon="dark_mode"></mat-icon>
+        } @else {
+          <mat-icon aria-hidden="false" fontIcon="light_mode"></mat-icon>
+        }
+      </button>
+      <button mat-icon-button class="header-actions--notification">
+        <mat-icon aria-hidden="false" fontIcon="notifications"></mat-icon>
+      </button>
+
+      <div class="header-actions--user">
+        <button>
+          <img src="assets/svg/header/header-user.svg" alt="User">
+        </button>
+        <mat-icon aria-hidden="false" fontIcon="keyboard_arrow_down"></mat-icon>
+      </div>
+
+    </div>
+  </ng-template>
 </header>
-`
