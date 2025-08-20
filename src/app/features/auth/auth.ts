@@ -4,11 +4,13 @@ import {Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthStore} from './state/auth.store';
 import {Store} from '@ngrx/store';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-auth',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButton
   ],
   providers: [
     AuthStore
@@ -24,7 +26,7 @@ export class Auth {
 
   constructor(
     private authStore: AuthStore,
-    private store: Store) {}
+   ) {}
 
   public onLogin(): void {
     if(this.loginForm.invalid) {

@@ -2,35 +2,14 @@
 
 <div class="menu-navigation">
   <div class="menu-navigation-actions">
-    <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
-      <button mat-icon-button class="active">
-        <mat-icon aria-hidden="false" fontIcon="dashboard"></mat-icon>
-      </button>
-    </ng-template>
-    <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
-      <button mat-icon-button>
-        <mat-icon aria-hidden="false" fontIcon="browse_gallery"></mat-icon>
-      </button>
-    </ng-template>
-    <ng-template [skeletonIf]="isLoading!"  skeletonIfVariant="circle">
-      <button mat-icon-button>
-        <mat-icon aria-hidden="false" fontIcon="book_ribbon"></mat-icon>
-      </button>
-    </ng-template>
-    <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
-      <button mat-icon-button>
-        <mat-icon aria-hidden="false" fontIcon="settings"></mat-icon>
-      </button>
-    </ng-template>
-    <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
-      <button mat-icon-button>
-        <mat-icon aria-hidden="false" fontIcon="send"></mat-icon>
-      </button>
-    </ng-template>
-    <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
-      <button mat-icon-button>
-        <mat-icon aria-hidden="false" fontIcon="cloud_download"></mat-icon>
-      </button>
-    </ng-template>
+
+    @for (menu of menuNavigations; track menu.link) {
+      <ng-template [skeletonIf]="isLoading!" skeletonIfVariant="circle">
+        <a [routerLink]="menu.link" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}"
+           mat-icon-button [matTooltip]="menu.title" [matTooltipShowDelay]="500" [matTooltipPosition]="'before'">
+          <mat-icon aria-hidden="false" [fontIcon]="menu.icon"></mat-icon>
+        </a>
+      </ng-template>
+    }
   </div>
 </div>

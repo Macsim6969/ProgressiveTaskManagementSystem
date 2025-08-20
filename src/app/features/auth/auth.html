@@ -1,10 +1,61 @@
 <div class="auth">
   <div class="auth-container">
     <h2 class="auth-container-title">Login</h2>
-    <form class="auth-container-form" [formGroup]="loginForm" (submit)="onLogin()">
-      <input formControlName="email" type="email" placeholder="Username" name="username" />
-      <input formControlName="password" type="password" placeholder="Password" name="password" />
-      <button type="submit">Login</button>
+    <form class="auth-container-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div>
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="Username"
+          name="username"
+        />
+
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+          <div class="error">
+            @if (loginForm.get('email')?.errors?.['required']) {
+              <small>
+                * Email обязателен
+              </small>
+            }
+            @if (loginForm.get('email')?.errors?.['email']) {
+              <small>
+                * Неверный формат email
+              </small>
+            }
+          </div>
+        }
+      </div>
+
+
+      <div>
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+          name="password"
+        />
+
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+          <div class="error">
+            @if (loginForm.get('password')?.errors?.['required']) {
+              <small>
+                * Пароль обязателен
+              </small>
+            }
+
+            @if (loginForm.get('password')?.errors?.['minlength']) {
+              <small>
+                * Минимальная длина пароля — 6 символов
+              </small>
+            }
+          </div>
+        }</div>
+
+
+      <button mat-button type="submit" [disabled]="loginForm.invalid">
+        Login
+      </button>
     </form>
+
   </div>
 </div>

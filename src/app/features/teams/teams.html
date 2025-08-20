@@ -1,0 +1,25 @@
+@let teamsCategory = teamsCategory$ | async;
+
+<section class="teams container">
+  <h3 class="title">Teams</h3>
+  <div class="teams-container">
+    @for (team of teamsCategory; track team.type) {
+      <ng-template [skeletonIf]="!teamsCategory" skeletonIfVariant="rect">
+        <div class="team-category-card">
+          <p class="team-category-card-title">{{ team.name }}</p>
+          <div class="team-category-card-footer">
+            <p>
+              <mat-icon aria-hidden="false" [fontIcon]="'groups'"></mat-icon>
+              : {{ team.teamsCount }}
+            </p>
+            <p>
+              <mat-icon aria-hidden="false" [fontIcon]="'assignment'"></mat-icon>
+              : {{ team.tasksCount }}
+            </p>
+          </div>
+        </div>
+      </ng-template>
+    }
+
+  </div>
+</section>

@@ -11,10 +11,11 @@
       align-items: center;
       gap: 1.6rem;
 
-      button {
+      a {
         display: flex;
         align-items: center;
         justify-content: center;
+        text-transform: none;
 
         mat-icon:before{
           color: var(--bg-dashboard-icon);
