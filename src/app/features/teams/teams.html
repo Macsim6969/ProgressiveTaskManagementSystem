@@ -1,25 +1,27 @@
 @let teamsCategory = teamsCategory$ | async;
+@let selectedTypeTeam = selectedTypeTeam$ | async;
+@let teamsByCategoryTeamFilters = teamsByCategoryTeamFilters$ | async;
+@let filteredTeams = filteredTeams$ | async;
 
 <section class="teams container">
   <h3 class="title">Teams</h3>
   <div class="teams-container">
-    @for (team of teamsCategory; track team.type) {
-      <ng-template [skeletonIf]="!teamsCategory" skeletonIfVariant="rect">
-        <div class="team-category-card">
-          <p class="team-category-card-title">{{ team.name }}</p>
-          <div class="team-category-card-footer">
-            <p>
-              <mat-icon aria-hidden="false" [fontIcon]="'groups'"></mat-icon>
-              : {{ team.teamsCount }}
-            </p>
-            <p>
-              <mat-icon aria-hidden="false" [fontIcon]="'assignment'"></mat-icon>
-              : {{ team.tasksCount }}
-            </p>
-          </div>
-        </div>
-      </ng-template>
+    <div class="teams-container-category">
+      <app-teams-category [teamsCategory]="teamsCategory!" [selectedTypeTeam]="selectedTypeTeam"
+                          (selectedTypeChange)="chooseTeam($event)"/>
+    </div>
+
+
+    @if (selectedTypeTeam) {
+      <div class="teams-container-teams">
+        <app-teams-by-category-actions [teamsByCategoryTeamFilters]="teamsByCategoryTeamFilters"
+                                       (changeFilters)="updatedFilters($event)"/>
+        @if (filteredTeams && filteredTeams.length) {
+          <app-teams-by-category-card [teamByCategory]="filteredTeams"/>
+        }
+      </div>
     }
+
 
   </div>
 </section>

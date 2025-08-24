@@ -1,7 +1,7 @@
 import {TeamsCategoryType} from '../models/teams-category-type.model';
-import {TeamsCategory} from '../models/teams-category.model';
+import {TeamsCategoryModel} from '../models/teams-category.model';
 
-export const teamsCategory: TeamsCategory[] = [
+export const teamsCategory: TeamsCategoryModel[] = [
   {
     name: 'Project Manager',
     type: TeamsCategoryType.ProjectManager,

@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Auth } from './auth';
-import {AuthStore} from './state/auth.store';
+import { TeamsCategory } from './teams-category';
 
-describe('Auth', () => {
-  let component: Auth;
-  let fixture: ComponentFixture<Auth>;
+describe('TeamsCategory', () => {
+  let component: TeamsCategory;
+  let fixture: ComponentFixture<TeamsCategory>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Auth],
-      providers: [AuthStore]
+      imports: [TeamsCategory]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Auth);
+    fixture = TestBed.createComponent(TeamsCategory);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

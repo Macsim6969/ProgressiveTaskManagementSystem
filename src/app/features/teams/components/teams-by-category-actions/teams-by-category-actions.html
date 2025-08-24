@@ -1,0 +1,7 @@
+@if (teamsByCategoryTeamFilters) {
+  <div class="teams-by-category-actions">
+    <app-search [search]="teamsByCategoryTeamFilters.search" (searchChange)="changeSearch($event)"/>
+
+  </div>
+}
+

@@ -11,10 +11,11 @@ import {AppState} from '../../state/app.state';
 import {selectIsLoading} from '../../state/app.selectors';
 import {AsyncPipe} from '@angular/common';
 import {Observable} from 'rxjs';
+import {Search} from '../../shared/components/search/search';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule, MatIconButton, SkeletonIfDirective, AsyncPipe,],
+  imports: [MatIconModule, MatIconButton, SkeletonIfDirective, AsyncPipe, Search,],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   providers: [SkeletonIfDirective],

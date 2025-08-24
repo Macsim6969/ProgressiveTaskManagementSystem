@@ -9,10 +9,7 @@
   </ng-template>
 
   <ng-template [skeletonIf]="isLoading!">
-    <div class="header-search">
-      <input placeholder="Search anything...">
-      <mat-icon aria-hidden="false" aria-label="Search anything" fontIcon="search"></mat-icon>
-    </div>
+    <app-search />
   </ng-template>
 
   <ng-template [skeletonIf]="isLoading!">

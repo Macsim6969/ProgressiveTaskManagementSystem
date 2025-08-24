@@ -1,0 +1,18 @@
+:host {
+  background: white;
+  width: 100%;
+  padding: 1.6rem;
+  border-radius: 2.4rem;
+
+  ::ng-deep{
+    .cdk-overlay-pane{
+      background: #ffffff;
+    }
+  }
+
+  .teams-by-category-actions{
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+  }
+}

@@ -1,0 +1,26 @@
+:host {
+  .search{
+    display: flex;
+    padding: 1.2rem 2rem;
+    border-radius: 0.7rem;
+    background: var(--bg-search);
+
+    align-items: center;
+    gap: 1rem;
+
+    input {
+      outline: none;
+      border: none;
+      background: transparent;
+      color: var(--color-text);
+      min-width: 226px;
+      width: 100%;
+      font-size: 1.4rem;
+    }
+
+    mat-icon::before {
+      cursor: pointer;
+      color: var(--color-mat-icon-header-sarch);
+    }
+  }
+}

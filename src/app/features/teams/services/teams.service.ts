@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {TeamsCategory} from '../models/teams-category.model';
-import {Observable, of} from 'rxjs';
+import {TeamsCategoryModel} from '../models/teams-category.model';
+import {delay, Observable, of} from 'rxjs';
 import {teamsCategory} from '../constants/teams-category.constant';
+import {TeamsCategoryType} from '../models/teams-category-type.model';
+import {Team} from '../models/team.model';
+import {teamMembers} from '../constants/teams-by-category.constant';
 
 
 @Injectable()
@@ -10,10 +13,22 @@ import {teamsCategory} from '../constants/teams-category.constant';
 export class TeamsService {
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
-  public getTeamsCategory(): Observable<TeamsCategory[]> {
-    this.http.get<TeamsCategory[]>('');
-    return of(teamsCategory);
+  public getTeamsCategory(): Observable<TeamsCategoryModel[]> {
+    this.http.get<TeamsCategoryModel[]>('')
+
+    return of(teamsCategory).pipe(
+      delay(300)
+    )
+  }
+
+  public getTeamByCategory(categoryType: TeamsCategoryType): Observable<Team[]> {
+    this.http.get<Team[]>('');
+
+    return of(teamMembers[categoryType]).pipe(
+      delay(300)
+    )
   }
 }

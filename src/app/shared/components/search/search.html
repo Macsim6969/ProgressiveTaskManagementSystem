@@ -1,0 +1,10 @@
+<div class="search">
+  <input placeholder="Search anything..."  [value]="search"
+         (input)="onInput($event.target.value)">
+  @if(search.length > 0){
+    <mat-icon aria-hidden="false" aria-label="Close" fontIcon="close" (click)="onInput('')"></mat-icon>
+  }
+  <mat-icon aria-hidden="false" aria-label="Search anything" fontIcon="search"></mat-icon>
+</div>
+
+

@@ -7,6 +7,15 @@
   transition:  all 0.5s ease;
   scroll-behavior: smooth;
   font-family: "Ubuntu", sans-serif;
+
+  ::ng-deep{
+    .cdk-overlay-pane{
+      background: #ffffff;
+    }
+    .mat-mdc-select-panel{
+      background: #ffffff;
+    }
+  }
 }
 
 html,
