@@ -5,11 +5,16 @@ import {GameCell, GameFiledBlock, GameFiledBlockColor} from '../models/game-file
 import {PlayerType} from '../models/player.type';
 import {Player} from '../models/player.enum';
 import {tap} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {GameWinnerModal} from '../components/game-winner-modal/game-winner-modal';
 
 @Injectable()
 export class ComparusGameState extends ComponentStore<GameState> {
+  private roundTimeout?: ReturnType<typeof setTimeout>;
 
-  constructor() {
+  constructor(
+    private dialog: MatDialog
+  ) {
     super({
       field: Array.from({length: 10}, (_, row) =>
         Array.from({length: 10}, (_, col) => ({
@@ -29,6 +34,13 @@ export class ComparusGameState extends ComponentStore<GameState> {
     trigger$.pipe(
       tap(() => {
         this.patchState({
+          field: Array.from({length: 10}, (_, row) =>
+            Array.from({length: 10}, (_, col) => ({
+              row,
+              col,
+              color: 'idle' as GameFiledBlockColor
+            }))
+          ).flat(),
           score: {player: 0, computer: 0},
           winner: undefined,
           isRunning: true
@@ -42,6 +54,11 @@ export class ComparusGameState extends ComponentStore<GameState> {
   public readonly nextRound = this.effect<void>(trigger$ =>
     trigger$.pipe(
       tap(() => {
+
+        if (this.roundTimeout) {
+          clearTimeout(this.roundTimeout);
+        }
+
         const row = Math.floor(Math.random() * 10);
         const col = Math.floor(Math.random() * 10);
 
@@ -50,13 +67,16 @@ export class ComparusGameState extends ComponentStore<GameState> {
         this.patchState(state => ({
           ...state,
           field: state.field.map(c =>
-            c.row === row && c.col === col ? newCell : { ...c, color: c.color === 'active' ? 'idle' : c.color }
+            c.row === row && c.col === col
+              ? newCell
+              : { ...c, color: c.color === 'active' ? 'idle' : c.color }
           ),
           currentCell: newCell
         }));
 
-        setTimeout(() => this.timeout(), this.get().reactionMs);
-      }))
+        this.roundTimeout = setTimeout(() => this.timeout(), this.get().reactionMs);
+      })
+    )
   );
 
 
@@ -67,11 +87,16 @@ export class ComparusGameState extends ComponentStore<GameState> {
         if (!s.currentCell || !s.isRunning) return;
 
         if (s.currentCell.row === row && s.currentCell.col === col) {
+          if (this.roundTimeout) {
+            clearTimeout(this.roundTimeout);
+          }
           this.updateCell(row, col, 'hit');
-          this.updateScore('player');
+          this.updateScore('player'); // ⬅️ здесь всё решается
         }
       })
-    ))
+    )
+  );
+
 
   //Method
   private timeout() {
@@ -93,26 +118,38 @@ export class ComparusGameState extends ComponentStore<GameState> {
   }
 
   private updateScore(player: 'player' | 'computer') {
-    const newScore = {
-      ...this.get().score,
-      [player]: this.get().score[player] + 1
-    };
+    const s = this.get();
+
+    const newScore = { ...s.score, [player]: s.score[player] + 1 };
 
     let winner: 'player' | 'computer' | undefined;
     if (newScore.player === 10) winner = 'player';
     if (newScore.computer === 10) winner = 'computer';
-    this.patchState({
-        ...this.state,
-        score: newScore,
-        winner,
-        isRunning: !winner
-      }
-    );
 
-    if (!this.get().winner) {
-      this.nextRound();
+    this.patchState({
+      ...s,
+      score: newScore,
+      winner,
+      isRunning: !winner,
+      currentCell: undefined
+    });
+
+    if (winner) {
+      this.dialog.open(GameWinnerModal, {
+        data: { winner, score: newScore },
+        disableClose: true
+      }).afterClosed().subscribe(result => {
+        if (result) {
+          this.start();
+        }
+      });
+      return;
     }
+
+    this.nextRound();
   }
+
+
 
   //Updaters
   public readonly setReactionMs = this.updater<number>((state, ms) => ({
@@ -120,16 +157,10 @@ export class ComparusGameState extends ComponentStore<GameState> {
     reactionMs: ms
   }))
 
-  public readonly setWinner = this.updater<Player | undefined>((state, winner) => ({
-    ...state,
-    isRunning: false,
-    winner: winner
-  }))
 
   //Selectors
   public readonly field$ = this.select((state: GameState): GameFiledBlock => state.field);
   public readonly score$ = this.select((state: GameState): Score => state.score);
   public readonly isRunning$ = this.select((state: GameState): boolean => state.isRunning);
-  public readonly winner$ = this.select((state: GameState) => state.winner);
   public readonly reactionMs$ = this.select((state: GameState): number => state.reactionMs);
 }

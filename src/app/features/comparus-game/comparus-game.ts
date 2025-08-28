@@ -1,29 +1,38 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
-import {GamePhase, GameState} from './models/game.model';
-import {GameService} from './services/game.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ComparusGameHeader} from './components/comparus-game-header/comparus-game-header';
-import {ComparusGameBoard} from './components/comparus-game-board/comparus-game-board';
+import {Component} from '@angular/core';
+
+import {GameHeader} from './components/game-header/game-header';
+import {GameBoard} from './components/game-board/game-board';
 import {ComparusGameState} from './state/comparus-game.state';
 
 @Component({
   selector: 'app-comparus-game',
   imports: [
-    ComparusGameHeader,
-    ComparusGameBoard
+    GameHeader,
+    GameBoard
   ],
   providers: [ComparusGameState],
   templateUrl: './comparus-game.html',
   styleUrl: './comparus-game.scss'
 })
 export class ComparusGame {
-  get field$() { return this.store.field$; }
-  get score$() { return this.store.score$; }
-  get isRunning$() { return this.store.isRunning$; }
-  get winner$() { return this.store.winner$; }
-  get reactionMs$() { return this.store.reactionMs$; }
+  get field$() {
+    return this.store.field$;
+  }
 
-  constructor(public store: ComparusGameState) {}
+  get score$() {
+    return this.store.score$;
+  }
+
+  get isRunning$() {
+    return this.store.isRunning$;
+  }
+
+  get reactionMs$() {
+    return this.store.reactionMs$;
+  }
+
+  constructor(public store: ComparusGameState) {
+  }
 
   public setGameState(): void {
     this.store.start();

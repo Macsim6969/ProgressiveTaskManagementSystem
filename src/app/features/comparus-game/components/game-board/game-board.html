@@ -1,4 +1,5 @@
 @let field = field$ | async;
+@let isRunning = isRunning$ |async;
 
 <section class="board">
   <div class="grid">
@@ -7,8 +8,9 @@
         class="cell"
         [attr.data-state]="cell.color"
         (click)="clickCell({ row: cell.row, col: cell.col })"
-        [disabled]="cell.color === 'hit' || cell.color === 'miss'"
+        [disabled]="!isRunning || cell.color === 'hit' || cell.color === 'miss' || cell.color === 'idle'"
       ></button>
     }
   </div>
 </section>
+

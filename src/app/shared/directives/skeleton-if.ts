@@ -23,7 +23,7 @@ export class SkeletonIfDirective implements OnDestroy{
 
   @Input('skeletonIf') set loading(value: boolean) {
     if (value) {
-      // При первом загрузке показываем контент (чтобы замерить)
+
       this._loading = false;
       this.updateView();
 
@@ -100,7 +100,7 @@ export class SkeletonIfDirective implements OnDestroy{
     });
     this.resizeObserver.observe(el);
 
-    // Делать замер с задержкой, чтобы гарантировать рендеринг
+
     requestAnimationFrame(() => this.measureElement(el));
   }
 

@@ -1,5 +1,5 @@
 import {GameCell, GameFiledBlock} from './game-filed-block.type';
-import {Player} from './player.enum';
+import {PlayerType} from './player.type';
 
 export interface Score {
   player: number;
@@ -11,6 +11,6 @@ export interface GameState {
   score: Score;
   currentCell?: GameCell;
   isRunning: boolean;
-  winner?: 'player' | 'computer';
+  winner?: PlayerType;
   reactionMs: number;
 }
