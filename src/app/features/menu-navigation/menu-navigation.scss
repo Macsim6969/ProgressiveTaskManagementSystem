@@ -5,6 +5,10 @@
     background: var(--bg-dashboard-color);
     height: 100%;
 
+    @media (max-width: 768px) {
+      display: none;
+    }
+
     &-actions {
       display: flex;
       flex-direction: column;

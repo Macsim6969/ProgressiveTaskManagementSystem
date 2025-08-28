@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {AuthGuard} from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -14,6 +14,11 @@ export const routes: Routes = [
   {
     path: 'teams',
     loadComponent: () => import('./features/teams/teams').then(c => c.Teams),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'comparus-game',
+    loadComponent: () => import('./features/comparus-game/comparus-game').then(c => c.ComparusGame),
     canActivate: [AuthGuard]
   },
   {

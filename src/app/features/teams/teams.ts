@@ -10,6 +10,8 @@ import {TeamsCategory} from './components/teams-category/teams-category';
 import {TeamsByCategoryCard} from './components/teams-by-category-card/teams-by-category-card';
 import {TeamsByCategoryActions} from './components/teams-by-category-actions/teams-by-category-actions';
 import {Filters} from '../../shared/models/filters.model';
+import {MatIconButton} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-teams',
@@ -18,6 +20,8 @@ import {Filters} from '../../shared/models/filters.model';
     TeamsCategory,
     TeamsByCategoryCard,
     TeamsByCategoryActions,
+    MatIconButton,
+    MatIconModule,
   ],
   providers: [TeamsService, TeamsStore],
   templateUrl: './teams.html',
@@ -26,8 +30,10 @@ import {Filters} from '../../shared/models/filters.model';
 })
 export class Teams implements OnInit {
 
+  private teamsWorkers: Worker | null = null;
+
   constructor(
-    private teamsStore: TeamsStore
+    private teamsStore: TeamsStore,
   ) {
   }
 
@@ -49,6 +55,7 @@ export class Teams implements OnInit {
 
   ngOnInit() {
     this.teamsStore.getTeamsCategory();
+
   }
 
   public chooseTeam(team: TeamsCategoryType): void {
@@ -57,5 +64,9 @@ export class Teams implements OnInit {
 
   public updatedFilters(newFilters: Filters): void {
     this.teamsStore.updateFilters(newFilters);
+  }
+
+  public searchNewTeams(): void {
+    this.teamsStore.searchNewTeamForProject();
   }
 }

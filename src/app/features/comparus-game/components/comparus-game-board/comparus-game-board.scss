@@ -1,0 +1,74 @@
+.board {
+  margin-top: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+
+.cell {
+  width: clamp(28px, 100%, 56px);
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #2d68ff; /* blue */
+  transition: transform 0.05s ease, background-color 0.15s ease;
+}
+
+.cell:active {
+  transform: scale(0.98);
+}
+
+.cell[data-state="active"] {
+  background: #ffd400; /* yellow */
+}
+
+.cell[data-state="hit"] {
+  background: #00c853; /* green */
+}
+
+.cell[data-state="miss"] {
+  background: #ff5252; /* red */
+}
+
+/* modal.component.css */
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.modal {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.25rem;
+  min-width: 320px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+.close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-title {
+  margin: 0 0 0.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}

@@ -10,8 +10,10 @@ import {Filters} from '../../../shared/models/filters.model';
 interface State {
   selectedCategory: TeamsCategoryType | null;
   teamsCategory: TeamsCategoryModel[];
-  teamByCategory: Team[];
+  teams: Team[];
   filters: Filters;
+
+  newTeamsForProject: Team[];
 }
 
 @Injectable()
@@ -22,10 +24,11 @@ export class TeamsStore extends ComponentStore<State> {
     super({
       selectedCategory: null,
       teamsCategory: [],
-      teamByCategory: [],
+      teams: [],
       filters: {
         search: '',
-      }
+      },
+      newTeamsForProject: []
     });
   }
 
@@ -58,10 +61,35 @@ export class TeamsStore extends ComponentStore<State> {
         return this.teamsService.getTeamByCategory(categoryType).pipe(
           tap((teamByCategory: Team[]) => {
             this.patchState({
-              teamByCategory: teamByCategory
+              teams: teamByCategory
             })
           })
         )
+      })
+    ))
+
+  public searchNewTeamForProject = this.effect<void>(trigger$ =>
+    trigger$.pipe(
+      switchMap(() => {
+        return this.teamsService.searchNewTeamForProject()
+          .pipe(
+            tap((data: any) => {
+              const worker = new Worker(
+                new URL('../../../workers/team-filter.worker', import.meta.url)
+              );
+
+              worker.onmessage = ({data}) => {
+                this.patchState({
+                  selectedCategory: null
+                })
+                this.updateTeams(data)
+                console.log(data);
+                worker.terminate();
+              };
+
+              worker.postMessage({users: data.results});
+            })
+          )
       })
     ))
 
@@ -69,22 +97,28 @@ export class TeamsStore extends ComponentStore<State> {
 
   public updateFilters = this.updater<Partial<Filters>>((state, filters) => ({
     ...state,
-    filters: { ...state.filters, ...filters }
+    filters: {...state.filters, ...filters}
   }));
+
+  public updateTeams = this.updater<Team[]>((state, team) => ({
+    ...state,
+    teams: team
+  }))
 
 
   //Selectors
   public selectedCategory$ = this.select(state => state.selectedCategory);
   public teamsCategory$ = this.select(state => state.teamsCategory);
-  public teamByCategory$ = this.select(state => state.teamByCategory);
+  public teams$ = this.select(state => state.teams);
   public filters$ = this.select(state => state.filters);
 
   public filteredTeams$ = this.select(
-    this.teamByCategory$,
+    this.teams$,
     this.filters$,
     (teams, filters) => {
       let result = [...teams];
 
+      //Need create web workers for filters
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
         result = result.filter(

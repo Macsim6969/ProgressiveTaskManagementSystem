@@ -1,0 +1,14 @@
+@let field = field$ | async;
+
+<section class="board">
+  <div class="grid">
+    @for (cell of field; track cell.row + '-' + cell.col) {
+      <button
+        class="cell"
+        [attr.data-state]="cell.color"
+        (click)="clickCell({ row: cell.row, col: cell.col })"
+        [disabled]="cell.color === 'hit' || cell.color === 'miss'"
+      ></button>
+    }
+  </div>
+</section>

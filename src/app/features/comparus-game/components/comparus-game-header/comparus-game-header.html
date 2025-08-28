@@ -1,0 +1,25 @@
+@let reactionMs = reactionMs$ | async;
+@let score = score$ | async;
+
+<div class="toolbar">
+  <div class="controls">
+    <label for="reaction">N (ms):</label>
+    <input
+      id="reaction"
+      type="number"
+      min="100"
+      step="50"
+      [ngModel]="reactionMs"
+      (ngModelChange)="onReactionsChange($event)" />
+
+    <button class="primary" (click)="startGame()">Start</button>
+  </div>
+
+  @if(score){
+    <div class="score">
+      <span class="badge player">Player: {{ score.player }}</span>
+      <span class="badge computer">Computer: {{ score.computer }}</span>
+    </div>
+  }
+
+</div>

@@ -14,6 +14,10 @@ import {CommonModule} from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamsByCategoryCard {
-  @Input() teamByCategory: Team[] = [];
+  @Input() teams: Team[] = [];
+
+  constructor() {
+    console.log(this.teams);
+  }
 
 }

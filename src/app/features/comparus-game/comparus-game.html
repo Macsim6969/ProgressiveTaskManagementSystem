@@ -1,0 +1,10 @@
+<div class="game-wrapper">
+  <app-comparus-game-header
+    [reactionMs$]="reactionMs$"
+    [score$]="score$"
+    (setGameState)="setGameState()"
+    (setReactionsMs)="setReactionsMs($event)" />
+
+  <app-comparus-game-board  [field$]="field$" (clickedCell)="setClickedSell($event)"/>
+
+</div>

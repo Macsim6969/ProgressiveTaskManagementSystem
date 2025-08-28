@@ -31,4 +31,8 @@ export class TeamsService {
       delay(300)
     )
   }
+
+  public searchNewTeamForProject(): Observable<unknown> {
+    return this.http.get<unknown>('https://randomuser.me/api/?results=5000&nat=us')
+  }
 }
