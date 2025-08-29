@@ -1,8 +1,14 @@
-import {TestBed, fakeAsync, tick} from '@angular/core/testing';
-import {ComparusGameState} from './comparus-game.state';
-import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
-import {GameCell, GameFiledBlockColor} from '../models/game-filed-block.type';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComparusGameState } from './comparus-game.state';
+import { MatDialog } from '@angular/material/dialog';
+import {of, Subscription, take} from 'rxjs';
+import { GameCell, GameFiledBlockColor } from '../models/game-filed-block.type';
+
+const matDialogMock = {
+  open: () => ({
+    afterClosed: () => of(true)   // всегда возвращает observable
+  })
+};
 
 describe('ComparusGameState', () => {
   let store: ComparusGameState;
@@ -10,78 +16,79 @@ describe('ComparusGameState', () => {
 
   beforeEach(() => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) } as any);
+
     TestBed.configureTestingModule({
       providers: [
         ComparusGameState,
-        {provide: MatDialog, useValue: dialogSpy}
+        { provide: MatDialog, useValue: dialogSpy }   // ⚡️ теперь spy реально в DI
       ]
     });
 
     store = TestBed.inject(ComparusGameState);
   });
 
-  it('should be created with initial state', (done) => {
-    store.field$.subscribe(field => {
+  it('should be created with initial state', fakeAsync(() => {
+    store.field$.pipe(take(1)).subscribe(field => {
       expect(field.length).toBe(100);
-      done();
     });
-  });
+  }));
 
-  it('should set reactionMs with setReactionMs', () => {
+  it('should set reactionMs with setReactionMs', fakeAsync(() => {
     store.setReactionMs(500);
-    store.reactionMs$.subscribe(ms => expect(ms).toBe(500));
-  });
+    store.reactionMs$.pipe(take(1)).subscribe(ms => expect(ms).toBe(500));
+  }));
 
   it('start should reset field and score, set isRunning true', fakeAsync(() => {
     store.start();
-    store.score$.subscribe(score => expect(score.player).toBe(0));
-    store.isRunning$.subscribe(running => expect(running).toBeTrue());
-    store.field$.subscribe(field => expect(field.length).toBe(100));
+    tick();
+
+    store.score$.pipe(take(1)).subscribe(score => expect(score.player).toBe(0));
+    store.isRunning$.pipe(take(1)).subscribe(running => expect(running).toBeTrue());
+    store.field$.pipe(take(1)).subscribe(field => expect(field.length).toBe(100));
   }));
 
   it('clickCell should increment player score on correct hit', fakeAsync(() => {
     store.start();
-    tick(); // nextRound runs
+    tick();
 
     let activeCell: GameCell | undefined;
-    store.field$.subscribe(field => {
+    store.field$.pipe(take(1)).subscribe(field => {
       activeCell = field.find(c => c.color === 'active');
-    }).unsubscribe();
+    });
 
     store.clickCell({ row: activeCell!.row, col: activeCell!.col });
+    tick();
 
-    store.score$.subscribe(score => {
+    store.score$.pipe(take(1)).subscribe(score => {
       expect(score.player).toBe(1);
-    }).unsubscribe();
+    });
 
-    store.field$.subscribe(field => {
+    store.field$.pipe(take(1)).subscribe(field => {
       const updatedCell = field.find(c => c.row === activeCell!.row && c.col === activeCell!.col);
       expect(updatedCell!.color).toBe('hit');
-    }).unsubscribe();
+    });
   }));
 
-
-
-  it('clickCell on wrong cell should not increment player score', fakeAsync((done: DoneFn) => {
+  it('clickCell on wrong cell should not increment player score', fakeAsync(() => {
     store.start();
-    tick(); // nextRound runs
+    tick();
 
     let activeCell: GameCell | undefined;
-    store.field$.subscribe(field => {
+    store.field$.pipe(take(1)).subscribe(field => {
       activeCell = field.find(c => c.color === 'active');
-    }).unsubscribe();
+    });
 
     store.clickCell({ row: activeCell!.row + 1, col: activeCell!.col });
+    tick();
 
-    store.score$.subscribe(score => {
+    store.score$.pipe(take(1)).subscribe(score => {
       expect(score.player).toBe(0);
-      done();
-    }).unsubscribe();
+    });
   }));
 
-  it('should open dialog when player reaches 10 points', fakeAsync((done: DoneFn) => {
-    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) } as any);
-
+  it('should open dialog when player reaches 10 points', fakeAsync(() => {
+    spyOn(store, 'nextRound').and.callFake(() => Subscription.EMPTY);
 
     store.patchState({
       score: { player: 9, computer: 0 },
@@ -90,17 +97,19 @@ describe('ComparusGameState', () => {
       field: Array.from({ length: 100 }, (_, idx) => ({
         row: Math.floor(idx / 10),
         col: idx % 10,
-        color: 'idle' as GameFiledBlockColor
+        color: idx === 0 ? 'active' : 'idle'
       }))
     });
 
     store.clickCell({ row: 0, col: 0 });
+    tick();
 
-    store.score$.subscribe(score => {
+    // ждём новое значение
+    store.score$.pipe(take(2)).subscribe((score) => {
       expect(score.player).toBe(10);
-      expect(store.isRunning$).toBeDefined();
-      expect(dialogSpy.open).toHaveBeenCalled();
-      done();
-    }).unsubscribe();
+    });
+
+    expect(dialogSpy.open).toHaveBeenCalled();
   }));
+
 });

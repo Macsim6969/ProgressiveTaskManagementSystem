@@ -4,6 +4,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { GameFiledBlock } from '../../models/game-filed-block.type';
+import 'zone.js';
 
 describe('ComparusGameBoard', () => {
   let component: GameBoard;

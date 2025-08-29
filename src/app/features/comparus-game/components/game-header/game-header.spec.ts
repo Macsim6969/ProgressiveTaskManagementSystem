@@ -1,31 +1,45 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { GameHeader } from './game-header';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { ComparusGameState } from '../../state/comparus-game.state';
+import { ComponentStore } from '@ngrx/component-store';
 import { Score } from '../../models/game-state.interface';
+import {BehaviorSubject, of} from 'rxjs';
+import 'zone.js';
 
 describe('ComparusGameHeader', () => {
   let component: GameHeader;
   let fixture: ComponentFixture<GameHeader>;
+  let store: ComparusGameState;
 
   const mockScore: Score = { player: 2, computer: 3 };
   const reactionMs = 200;
-  const isRunning = false;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, MatInputModule, MatButtonModule, GameHeader]
+      imports: [FormsModule, MatInputModule, MatButtonModule, GameHeader],
+      providers: [ComparusGameState, ComponentStore]
     }).compileComponents();
+
+    store = TestBed.inject(ComparusGameState);
 
     fixture = TestBed.createComponent(GameHeader);
     component = fixture.componentInstance;
 
-    component.reactionMs$ = of(reactionMs);
-    component.score$ = of(mockScore);
-    component.isRunning$ = of(isRunning);
+    // Подключаем компонента к store, чтобы реактивные значения реально обновлялись
+    component.reactionMs$ = store.reactionMs$;
+    component.score$ = store.score$;
+    component.isRunning$ = store.isRunning$;
+
+    // Устанавливаем начальные значения в store
+    store.patchState({
+      score: mockScore,
+      reactionMs: reactionMs,
+      isRunning: false
+    });
 
     fixture.detectChanges();
   });
@@ -47,22 +61,34 @@ describe('ComparusGameHeader', () => {
     expect(component.setReactionsMs.emit).toHaveBeenCalledWith(300);
   });
 
-  it('should display correct score', () => {
+  it('should display correct score', fakeAsync(() => {
+    tick();
+    fixture.detectChanges();
+
     const playerBadge = fixture.debugElement.query(By.css('.badge.player')).nativeElement;
     const computerBadge = fixture.debugElement.query(By.css('.badge.computer')).nativeElement;
 
     expect(playerBadge.textContent.trim()).toBe('Player: 2');
     expect(computerBadge.textContent.trim()).toBe('Computer: 3');
-  });
+  }));
 
-  it('should disable input and button when isRunning is true', () => {
-    component.isRunning$ = of(true);
+  it('should disable input and button when isRunning is true', fakeAsync(() => {
+    const isRunningSubject = new BehaviorSubject<boolean>(false);
+    component.isRunning$ = isRunningSubject.asObservable();
     fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('input')).nativeElement;
-    const button = fixture.debugElement.query(By.css('button.primary')).nativeElement;
+// потом в тесте
+    isRunningSubject.next(true);
+    tick();
+    fixture.detectChanges();
+    tick();  // ещё один цикл для async pipe
+    fixture.detectChanges();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
 
     expect(input.disabled).toBeTrue();
     expect(button.disabled).toBeTrue();
-  });
+  }));
 });
+

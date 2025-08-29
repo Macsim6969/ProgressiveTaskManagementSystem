@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameWinnerModal } from './game-winner-modal';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
+import 'zone.js';
 
 describe('GameWinnerModal', () => {
   let component: GameWinnerModal;
@@ -17,7 +18,7 @@ describe('GameWinnerModal', () => {
     dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      declarations: [GameWinnerModal],
+      imports: [GameWinnerModal],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: mockData },
         { provide: MatDialogRef, useValue: dialogRefSpy }

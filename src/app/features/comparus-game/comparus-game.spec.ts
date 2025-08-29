@@ -1,7 +1,9 @@
+import 'zone.js';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComparusGame } from './comparus-game';
 import { of } from 'rxjs';
 import { ComparusGameState } from './state/comparus-game.state';
+
 
 describe('ComparusGame', () => {
   let component: ComparusGame;
@@ -36,18 +38,20 @@ describe('ComparusGame', () => {
   });
 
   it('should call store.start when setGameState is called', () => {
+    const spy = spyOn(component.store, 'start');
     component.setGameState();
-    expect(mockStore.start).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call store.setReactionMs when setReactionsMs is called', () => {
+    const spy = spyOn(component.store, 'setReactionMs');
     component.setReactionsMs(300);
-    expect(mockStore.setReactionMs).toHaveBeenCalledWith(300);
+    expect(spy).toHaveBeenCalledWith(300);
   });
 
   it('should call store.clickCell when setClickedSell is called', () => {
-    const cell = { row: 1, col: 2 };
-    component.setClickedSell(cell);
-    expect(mockStore.clickCell).toHaveBeenCalledWith(cell);
+    const spy = spyOn(component.store, 'clickCell');
+    component.setClickedSell({ row: 1, col: 2 });
+    expect(spy).toHaveBeenCalledWith({ row: 1, col: 2 });
   });
 });
