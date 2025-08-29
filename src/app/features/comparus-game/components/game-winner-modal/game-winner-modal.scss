@@ -1,55 +1,55 @@
 :host {
   display: block;
-  max-width: 400px;
+  max-width: 40rem;
 }
 
 .dialog-container {
   background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  border-radius: 1.6rem;
+  padding: 2.4rem;
+  box-shadow: 0 0.8rem 2.4rem rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 
   h2 {
-    font-size: 22px;
+    font-size: 2.2rem;
     font-weight: 600;
-    margin: 0 0 12px;
+    margin: 0 0 1.2rem;
     color: #333;
   }
 
   p {
-    margin: 6px 0;
-    font-size: 16px;
+    margin: 0.6rem 0;
+    font-size: 1.6rem;
     color: #555;
 
     &.winner {
-      font-size: 18px;
+      font-size: 1.8rem;
       font-weight: 600;
       color: #222;
     }
   }
 
   .score {
-    margin-top: 8px;
-    font-size: 15px;
+    margin-top: 0.8rem;
+    font-size: 1.5rem;
     color: #666;
   }
 
   .actions {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 1.2rem;
+    margin-top: 2rem;
 
     button {
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 0.8rem 1.6rem;
+      border-radius: 0.8rem;
       border: none;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 1.5rem;
       transition: background 0.2s ease;
 
       &.close {
