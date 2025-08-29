@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/progressive-task-management-system/browser/",
+    "public": "dist/progressive-task-management-system/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
