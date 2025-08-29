@@ -144,7 +144,12 @@ export class ComparusGameState extends ComponentStore<GameState> {
         disableClose: true
       }).afterClosed().subscribe(result => {
         if (result) {
-          this.start();
+          this.patchState({
+            field: ComparusGameState.createEmptyField(),
+            score: {player: 0, computer: 0},
+            winner: undefined,
+            isRunning: false
+          });
         }
       });
       return;

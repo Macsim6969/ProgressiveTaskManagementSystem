@@ -1,13 +1,13 @@
-<div class="dialog-container">
-  <h2>Game over</h2>
+<div class="game-winner-modal">
+  <h2 class="game-winner-modal-title">Game over</h2>
 
-  <p class="winner">
+  <p class="game-winner-modal-winner-title">
     {{ data.winner === 'player' ? '🎉 You win!' : '🎉 Computer wins' }}
   </p>
 
-  <p class="score">Score: You {{data.score.player}} — {{data.score.computer}} Computer</p>
+  <p class="game-winner-modal-winner-score">Score: You {{data.score.player}} — {{data.score.computer}} Computer</p>
 
-  <div class="actions">
+  <div class="game-winner-modal-actions">
     <button class="close" mat-dialog-close>Close</button>
     <button class="replay" (click)="playAgain()">Play again</button>
   </div>

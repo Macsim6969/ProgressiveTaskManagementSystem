@@ -1,8 +1,8 @@
 @let field = field$ | async;
 @let isRunning = isRunning$ |async;
 
-<section class="board">
-  <div class="grid">
+<section class="game-board">
+  <div class="game-board-grid">
     @for (cell of field; track cell.row + '-' + cell.col) {
       <button
         class="cell"

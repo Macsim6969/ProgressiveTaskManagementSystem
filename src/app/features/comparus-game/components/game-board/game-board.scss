@@ -1,11 +1,11 @@
-.board {
+.game-board {
   margin-top: 1rem;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  .grid {
+  &-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     width: 70vmin;

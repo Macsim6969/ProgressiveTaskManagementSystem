@@ -2,14 +2,13 @@
 @let score = score$ | async;
 @let isRunning = isRunning$ | async;
 
-<div class="toolbar">
-  <div class="controls">
+<div class="game-toolbar">
+  <div class="game-toolbar-controls">
     <label for="reaction">Change level:</label>
     <input
       id="reaction"
       type="number"
-      min="100"
-      step="50"
+      [min]="100"
       matInput
       [disabled]="isRunning!"
       [ngModel]="reactionMs"
@@ -19,7 +18,7 @@
   </div>
 
   @if (score) {
-    <div class="score">
+    <div class="game-toolbar-score">
       <span class="badge player">Player: {{ score.player }}</span>
       <span class="badge computer">Computer: {{ score.computer }}</span>
     </div>

@@ -22,15 +22,17 @@ export class GameHeader {
   @Input({required: true}) score$!: Observable<Score>;
   @Input({required: true}) isRunning$!: Observable<boolean>;
 
-  @Output() setReactionsMs = new EventEmitter<number>();
+  @Output() setReactionsMs: EventEmitter<number> = new EventEmitter<number>();
   @Output() setGameState: EventEmitter<void> = new EventEmitter<void>();
-
 
   public startGame(): void {
     this.setGameState.emit()
   }
 
   public onReactionsChange(ms: number): void {
+    if (ms == null || ms < 100) {
+      ms = 100;
+    }
     this.setReactionsMs.emit(ms);
   }
 }

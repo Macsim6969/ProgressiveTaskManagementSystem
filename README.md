@@ -2,26 +2,44 @@
 
 ## Project Structure
 
-src/app/features/comparus-game/
-├── comparus-game.component.ts # Root component
-├── comparus-game.html # Main template
-├── comparus-game.scss # Main styles
-├── components/
-│ ├── game-header/
-│ │ ├── game-header.component.ts
-│ │ ├── game-header.html
-│ │ └── game-header.scss
-│ ├── game-board/
-│ │ ├── game-board.component.ts
-│ │ ├── game-board.html
-│ │ └── game-board.scss
-│ └── game-winner-modal/
-│ └── game-winner-modal.component.ts
-├── state/
-│ └── comparus-game.state.ts # ComponentStore for game logic
-└── models/
-├── game-state.interface.ts
-└── game-filed-block.type.ts
+- **comparus-game.component.ts** – Root component of the game. Handles initialization and binds the game state to child components.
+- **comparus-game.component.spec.ts** – Unit test.
+- **comparus-game.html** – Template for the root component.
+- **comparus-game.scss** – Styles for the root component.
+
+### Components
+
+- **game-header/** – Game header component:
+  - **game-header.component.ts** – Logic and events for the game header.
+  - **game-header.component.spec.ts** – Unit test.
+  - **game-header.html** – Template for the game header.
+  - **game-header.scss** – Styles for the game header.
+
+- **game-board/** – Game board component:
+  - **game-board.component.ts** – Logic for the game board and handling cell clicks.
+  - **game-board.component.spec.ts** – Unit test.
+  - **game-board.html** – Template for the game board.
+  - **game-board.scss** – Styles for the game board.
+
+- **game-winner-modal/** – Winner modal component:
+  - **game-winner-modal.component.ts** – Logic for the modal window that shows the winner.
+  - **game-winner-modal.component.spec.ts** – Unit test.
+  - **game-winner-modal.html** – Template for the game winner modal.
+  - **game-winner-modal.scss** – Styles for the game winner modal.
+
+### State
+
+- **comparus-game.state.ts** – ComponentStore that manages the game state (score, field, current turn, player reactions, modals, etc.).
+- **comparus-game.state.spec.ts** – Unit test.
+
+### Models
+
+- **game-filed-block.type.ts** – Types for the game field cells.
+- **game-state.interface.ts** – Interfaces for the game state, including score and other properties.
+- **game-winner-data.interface.ts** – Type definitions for modal winner data.
+- **player.enum.ts** – Enum for player identifiers.
+- **player.type.ts** – Type for player identifiers.
+
 ---
 
 ## Main Components
@@ -38,6 +56,7 @@ src/app/features/comparus-game/
   - `score$`
   - `isRunning$`
   - `reactionMs$`
+- **Unit test:** `comparus-game.component.spec.ts`
 
 ---
 
@@ -50,25 +69,38 @@ src/app/features/comparus-game/
 - **Outputs:**
   - `setGameState` – triggers game start
   - `setReactionsMs` – updates reaction time
-- Disables inputs/buttons when game is running
+- Disables inputs/buttons when game is running.
+- **Unit test:** `game-header.component.spec.ts`
 
 ---
 
 ### 3. GameBoard
-- Displays the **10x10 game grid**
+- Displays the **10x10 game grid**.
 - **Inputs:**
   - `field$` – observable of all cells
   - `isRunning$` – whether the game is active
 - **Outputs:**
   - `clickedCell` – emits row/column of clicked cell
-- Buttons are disabled if cell is `idle`, `hit`, `miss`, or game is not running
+- Buttons are disabled if cell is `idle`, `hit`, `miss`, or game is not running.
+- **Unit test:** `game-board.component.spec.ts`
 
 ---
+
+### 4. GameWinnerModal
+- Displays **winner information** and **final score** after the game ends.
+- Receives **`data`** as input via `MAT_DIALOG_DATA` containing:
+  - `winner` – either `'player'` or `'computer'`
+  - `score` – final score object
+- Provides **callback** when modal is closed:
+  - **Close button** – closes modal without replay
+  - **Play again button** – closes modal and triggers game restart
+- **Unit test:** `game-winner-modal.component.spec.ts`
+
 
 ## ComparusGameState (ComponentStore)
 
 ### Key Responsibilities:
-- Holds **game state**: field, score, reaction time, running status
+- Holds **game state**: field, score, reaction time, running status.
 - Handles **effects**:
   - `start` – initialize game, reset score and field
   - `nextRound` – randomly select active cell, schedule timeout
@@ -85,5 +117,4 @@ src/app/features/comparus-game/
   - `score$` – observable for score
   - `isRunning$` – observable for game status
   - `reactionMs$` – observable for reaction time
-
----
+- **Unit test:** `comparus-game.state.spec.ts`

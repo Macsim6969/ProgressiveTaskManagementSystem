@@ -13,7 +13,6 @@ import {GameWinner} from '../../models/game-winner-data.interface';
 })
 export class GameWinnerModal {
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: GameWinner,
     private matDialog: MatDialogRef<GameWinnerModal>

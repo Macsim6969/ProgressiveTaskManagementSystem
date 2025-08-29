@@ -37,12 +37,12 @@ describe('GameWinnerModal', () => {
   });
 
   it('should display correct winner text', () => {
-    const winnerEl = fixture.debugElement.query(By.css('.winner')).nativeElement;
+    const winnerEl = fixture.debugElement.query(By.css('.game-winner-modal-winner-title')).nativeElement;
     expect(winnerEl.textContent.trim()).toBe('🎉 You win!');
   });
 
   it('should display correct score', () => {
-    const scoreEl = fixture.debugElement.query(By.css('.score')).nativeElement;
+    const scoreEl = fixture.debugElement.query(By.css('.game-winner-modal-winner-score')).nativeElement;
     expect(scoreEl.textContent.trim()).toBe('Score: You 3 — 1 Computer');
   });
 

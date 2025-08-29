@@ -1,11 +1,11 @@
-.toolbar {
+.game-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
 
-  .controls {
+  &-controls {
     display: flex;
     align-items: center;
     gap: 0.5vmin;
@@ -36,7 +36,7 @@
     }
   }
 
-  .score {
+  &-score {
     display: flex;
     gap: 0.5vmin;
 
