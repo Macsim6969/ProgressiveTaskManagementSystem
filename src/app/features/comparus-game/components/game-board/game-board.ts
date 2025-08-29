@@ -19,6 +19,5 @@ export class GameBoard {
 
   public clickCell(data: { row: number; col: number }): void {
     this.clickedCell.emit(data)
-    console.log(data);
   }
 }

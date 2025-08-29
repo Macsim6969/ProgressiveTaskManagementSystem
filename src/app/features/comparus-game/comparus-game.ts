@@ -15,6 +15,8 @@ import {ComparusGameState} from './state/comparus-game.state';
   styleUrl: './comparus-game.scss'
 })
 export class ComparusGame {
+
+  // TsConfig used strictPropertyInitialization: true , but we can off and used how "this.field$ = this.store.field$"
   get field$() {
     return this.store.field$;
   }

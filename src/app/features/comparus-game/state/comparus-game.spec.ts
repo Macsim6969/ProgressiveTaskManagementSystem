@@ -1,14 +1,9 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ComparusGameState } from './comparus-game.state';
 import { MatDialog } from '@angular/material/dialog';
-import {of, Subscription, take} from 'rxjs';
+import {of, skip, Subscription, take} from 'rxjs';
 import { GameCell, GameFiledBlockColor } from '../models/game-filed-block.type';
 
-const matDialogMock = {
-  open: () => ({
-    afterClosed: () => of(true)   // всегда возвращает observable
-  })
-};
 
 describe('ComparusGameState', () => {
   let store: ComparusGameState;
@@ -21,7 +16,7 @@ describe('ComparusGameState', () => {
     TestBed.configureTestingModule({
       providers: [
         ComparusGameState,
-        { provide: MatDialog, useValue: dialogSpy }   // ⚡️ теперь spy реально в DI
+        { provide: MatDialog, useValue: dialogSpy }
       ]
     });
 
@@ -104,12 +99,13 @@ describe('ComparusGameState', () => {
     store.clickCell({ row: 0, col: 0 });
     tick();
 
-    // ждём новое значение
-    store.score$.pipe(take(2)).subscribe((score) => {
+
+    store.score$.pipe(skip(1), take(1)).subscribe((score) => {
       expect(score.player).toBe(10);
     });
 
     expect(dialogSpy.open).toHaveBeenCalled();
   }));
+
 
 });

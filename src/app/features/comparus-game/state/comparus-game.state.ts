@@ -2,8 +2,6 @@ import {ComponentStore} from '@ngrx/component-store';
 import {Injectable} from '@angular/core';
 import {GameState, Score} from '../models/game-state.interface';
 import {GameCell, GameFiledBlock, GameFiledBlockColor} from '../models/game-filed-block.type';
-import {PlayerType} from '../models/player.type';
-import {Player} from '../models/player.enum';
 import {tap} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {GameWinnerModal} from '../components/game-winner-modal/game-winner-modal';
@@ -16,13 +14,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
     private dialog: MatDialog
   ) {
     super({
-      field: Array.from({length: 10}, (_, row) =>
-        Array.from({length: 10}, (_, col) => ({
-          row,
-          col,
-          color: 'idle' as GameFiledBlockColor
-        }))
-      ).flat(),
+      field: ComparusGameState.createEmptyField(),
       score: {player: 0, computer: 0},
       isRunning: false,
       reactionMs: 1000
@@ -30,17 +22,13 @@ export class ComparusGameState extends ComponentStore<GameState> {
   }
 
   //Effects
+
+  // Initial state for the game
   public readonly start = this.effect<void>(trigger$ =>
     trigger$.pipe(
       tap(() => {
         this.patchState({
-          field: Array.from({length: 10}, (_, row) =>
-            Array.from({length: 10}, (_, col) => ({
-              row,
-              col,
-              color: 'idle' as GameFiledBlockColor
-            }))
-          ).flat(),
+          field: ComparusGameState.createEmptyField(),
           score: {player: 0, computer: 0},
           winner: undefined,
           isRunning: true
@@ -51,6 +39,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
     )
   )
 
+  //Triggers a new round: randomly selects an active cell
   public readonly nextRound = this.effect<void>(trigger$ =>
     trigger$.pipe(
       tap(() => {
@@ -79,7 +68,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
     )
   );
 
-
+  //Handles player click: updates score if click was on the active cel
   public readonly clickCell = this.effect<{ row: number; col: number }>((trigger$) =>
     trigger$.pipe(
       tap(({row, col}) => {
@@ -98,7 +87,20 @@ export class ComparusGameState extends ComponentStore<GameState> {
   );
 
 
-  //Method
+  //Helper
+
+  // Creates an empty 10x10 game field
+  private static createEmptyField(): GameCell[] {
+    return Array.from({ length: 10 }, (_, row) =>
+      Array.from({ length: 10 }, (_, col) => ({
+        row,
+        col,
+        color: 'idle' as GameFiledBlockColor
+      }))
+    ).flat();
+  }
+
+  //Called when player fails to click in time
   private timeout() {
     const s = this.get();
     const cell = s.currentCell;
@@ -108,6 +110,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
     this.updateScore('computer');
   }
 
+  //Updates a specific cell color
   private updateCell(row: number, col: number, color: 'hit' | 'miss') {
     this.patchState(s => ({
       ...s,
@@ -117,6 +120,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
     }));
   }
 
+  //Updates score, checks for winner, and either opens modal or continues the game
   private updateScore(player: 'player' | 'computer') {
     const s = this.get();
 

@@ -1,59 +1,89 @@
-# ProgressiveTaskManagementSystem
+# Comparus Game
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+## Project Structure
 
-## Development server
+src/app/features/comparus-game/
+├── comparus-game.component.ts # Root component
+├── comparus-game.html # Main template
+├── comparus-game.scss # Main styles
+├── components/
+│ ├── game-header/
+│ │ ├── game-header.component.ts
+│ │ ├── game-header.html
+│ │ └── game-header.scss
+│ ├── game-board/
+│ │ ├── game-board.component.ts
+│ │ ├── game-board.html
+│ │ └── game-board.scss
+│ └── game-winner-modal/
+│ └── game-winner-modal.component.ts
+├── state/
+│ └── comparus-game.state.ts # ComponentStore for game logic
+└── models/
+├── game-state.interface.ts
+└── game-filed-block.type.ts
+---
 
-To start a local development server, run:
+## Main Components
 
-```bash
-ng serve
-```
+### 1. ComparusGameComponent
+- **Root component** of the game.
+- Responsible for **binding state** from `ComparusGameState` store to child components.
+- Handles game initialization and events:
+  - `startGame()`
+  - `changeReactionMs(ms: number)`
+  - `cellClick({row, col})`
+- Exposes reactive streams to templates using getters:
+  - `field$`
+  - `score$`
+  - `isRunning$`
+  - `reactionMs$`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+### 2. GameHeader
+- Displays **score** and **reaction time input**.
+- **Inputs:**
+  - `score$` – observable of current scores
+  - `reactionMs$` – observable of player reaction time
+  - `isRunning$` – observable if game is running
+- **Outputs:**
+  - `setGameState` – triggers game start
+  - `setReactionsMs` – updates reaction time
+- Disables inputs/buttons when game is running
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+### 3. GameBoard
+- Displays the **10x10 game grid**
+- **Inputs:**
+  - `field$` – observable of all cells
+  - `isRunning$` – whether the game is active
+- **Outputs:**
+  - `clickedCell` – emits row/column of clicked cell
+- Buttons are disabled if cell is `idle`, `hit`, `miss`, or game is not running
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## ComparusGameState (ComponentStore)
 
-## Building
+### Key Responsibilities:
+- Holds **game state**: field, score, reaction time, running status
+- Handles **effects**:
+  - `start` – initialize game, reset score and field
+  - `nextRound` – randomly select active cell, schedule timeout
+  - `clickCell` – handle user clicks on active cells
+- **Helpers**:
+  - `createEmptyField()` – creates 10x10 grid of idle cells
+  - `timeout()` – mark missed cell and update computer score
+  - `updateCell()` – update a specific cell color
+  - `updateScore()` – increment player/computer score, check winner
+- **Updaters**:
+  - `setReactionMs(ms: number)` – updates reaction time
+- **Selectors**:
+  - `field$` – observable for the game field
+  - `score$` – observable for score
+  - `isRunning$` – observable for game status
+  - `reactionMs$` – observable for reaction time
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---

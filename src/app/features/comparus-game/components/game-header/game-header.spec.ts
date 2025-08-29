@@ -29,12 +29,10 @@ describe('ComparusGameHeader', () => {
     fixture = TestBed.createComponent(GameHeader);
     component = fixture.componentInstance;
 
-    // Подключаем компонента к store, чтобы реактивные значения реально обновлялись
     component.reactionMs$ = store.reactionMs$;
     component.score$ = store.score$;
     component.isRunning$ = store.isRunning$;
 
-    // Устанавливаем начальные значения в store
     store.patchState({
       score: mockScore,
       reactionMs: reactionMs,
@@ -77,11 +75,10 @@ describe('ComparusGameHeader', () => {
     component.isRunning$ = isRunningSubject.asObservable();
     fixture.detectChanges();
 
-// потом в тесте
     isRunningSubject.next(true);
     tick();
     fixture.detectChanges();
-    tick();  // ещё один цикл для async pipe
+    tick();
     fixture.detectChanges();
 
     const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
