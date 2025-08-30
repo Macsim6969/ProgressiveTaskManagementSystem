@@ -1,18 +1,10 @@
-@let reactionMs = reactionMs$ | async;
-@let score = score$ | async;
-@let isRunning = isRunning$ | async;
-
 <div class="game-toolbar">
-  <div class="game-toolbar-controls">
-    <label for="reaction">Change level:</label>
+  <div class="game-toolbar-controls" [formGroup]="form">
+    <label>Change level:</label>
     <input
-      id="reaction"
       type="number"
-      [min]="100"
-      matInput
-      [disabled]="isRunning!"
-      [ngModel]="reactionMs"
-      (ngModelChange)="onReactionsChange($event)"/>
+      formControlName="reactionMs"
+      />
 
     <button mat-button [disabled]="isRunning" class="primary" (click)="startGame()">Start</button>
   </div>

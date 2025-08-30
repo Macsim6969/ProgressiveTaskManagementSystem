@@ -1,19 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AsyncPipe} from '@angular/common';
-import {Observable} from 'rxjs';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {GameFiledBlock} from '../../models/game-filed-block.type';
 
 @Component({
   selector: 'app-game-board',
-  imports: [
-    AsyncPipe
-  ],
   templateUrl: './game-board.html',
-  styleUrl: './game-board.scss'
+  styleUrl: './game-board.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameBoard {
-  @Input({required: true}) field$!: Observable<GameFiledBlock>;
-  @Input({required: true}) isRunning$!: Observable<boolean>;
+  @Input({required: true}) field!: GameFiledBlock;
+  @Input({required: true}) isRunning!: boolean;
 
   @Output() clickedCell: EventEmitter<{ row: number; col: number }> = new EventEmitter<{ row: number; col: number }>();
 

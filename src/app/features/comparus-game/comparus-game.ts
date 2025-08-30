@@ -3,12 +3,14 @@ import {Component} from '@angular/core';
 import {GameHeader} from './components/game-header/game-header';
 import {GameBoard} from './components/game-board/game-board';
 import {ComparusGameState} from './state/comparus-game.state';
+import {AsyncPipe, JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-comparus-game',
   imports: [
     GameHeader,
-    GameBoard
+    GameBoard,
+    AsyncPipe
   ],
   providers: [ComparusGameState],
   templateUrl: './comparus-game.html',
@@ -33,8 +35,7 @@ export class ComparusGame {
     return this.store.reactionMs$;
   }
 
-  constructor(public store: ComparusGameState) {
-  }
+  constructor(public store: ComparusGameState) {}
 
   public setGameState(): void {
     this.store.start();
@@ -44,10 +45,7 @@ export class ComparusGame {
     this.store.setReactionMs(ms);
   }
 
-
-  public setClickedSell(data: { row: number; col: number }): void {
+  public setClickedCell(data: { row: number; col: number }): void {
     this.store.clickCell(data)
   }
-
-
 }

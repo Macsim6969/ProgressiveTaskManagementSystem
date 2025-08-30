@@ -37,7 +37,6 @@
 - **game-filed-block.type.ts** – Types for the game field cells.
 - **game-state.interface.ts** – Interfaces for the game state, including score and other properties.
 - **game-winner-data.interface.ts** – Type definitions for modal winner data.
-- **player.enum.ts** – Enum for player identifiers.
 - **player.type.ts** – Type for player identifiers.
 
 ---

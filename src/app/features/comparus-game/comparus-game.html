@@ -1,11 +1,15 @@
+@let reactionMs = reactionMs$ | async;
+@let score = score$ | async;
+@let isRunning = isRunning$ | async;
+@let field = field$ | async;
+
 <div class="game-wrapper">
   <app-game-header
-    [reactionMs$]="reactionMs$"
-    [score$]="score$"
-    [isRunning$]="isRunning$"
+    [reactionMs]="reactionMs!"
+    [score]="score!"
+    [isRunning]="isRunning!"
     (setGameState)="setGameState()"
-    (setReactionsMs)="setReactionsMs($event)" />
+    (setReactionsMs)="setReactionsMs($event)"/>
 
-  <app-game-board  [field$]="field$" [isRunning$]="isRunning$" (clickedCell)="setClickedSell($event)"/>
-
+  <app-game-board [field]="field!" [isRunning]="isRunning!" (clickedCell)="setClickedCell($event)"/>
 </div>

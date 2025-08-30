@@ -5,6 +5,7 @@ import {GameCell, GameFiledBlock, GameFiledBlockColor} from '../models/game-file
 import {tap} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {GameWinnerModal} from '../components/game-winner-modal/game-winner-modal';
+import {PlayerType} from '../models/player.type';
 
 @Injectable()
 export class ComparusGameState extends ComponentStore<GameState> {
@@ -121,7 +122,7 @@ export class ComparusGameState extends ComponentStore<GameState> {
   }
 
   //Updates score, checks for winner, and either opens modal or continues the game
-  private updateScore(player: 'player' | 'computer') {
+  private updateScore(player: PlayerType) {
     const s = this.get();
 
     const newScore = { ...s.score, [player]: s.score[player] + 1 };
@@ -158,8 +159,6 @@ export class ComparusGameState extends ComponentStore<GameState> {
     this.nextRound();
   }
 
-
-
   //Updaters
   public readonly setReactionMs = this.updater<number>((state, ms) => ({
     ...state,
@@ -168,8 +167,8 @@ export class ComparusGameState extends ComponentStore<GameState> {
 
 
   //Selectors
-  public readonly field$ = this.select((state: GameState): GameFiledBlock => state.field);
-  public readonly score$ = this.select((state: GameState): Score => state.score);
-  public readonly isRunning$ = this.select((state: GameState): boolean => state.isRunning);
-  public readonly reactionMs$ = this.select((state: GameState): number => state.reactionMs);
+  public field$ = this.select((state: GameState): GameFiledBlock => state.field);
+  public score$ = this.select((state: GameState): Score => state.score);
+  public isRunning$ = this.select((state: GameState): boolean => state.isRunning);
+  public reactionMs$ = this.select((state: GameState): number => state.reactionMs);
 }
