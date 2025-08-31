@@ -17,11 +17,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'comparus-game',
-    loadComponent: () => import('./features/comparus-game/comparus-game').then(c => c.ComparusGame),
-    canActivate: [AuthGuard]
-  },
-  {
     path: '**',
     redirectTo: '/dashboard',
   },

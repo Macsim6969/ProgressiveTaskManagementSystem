@@ -9,7 +9,7 @@
     <h3 class="title">Teams</h3>
     <button mat-icon-button class="teams-header-find" (click)="searchNewTeams()">
       <mat-icon aria-hidden="false" [fontIcon]="'person_search'"></mat-icon>
-     <span>Find new by AI</span>
+      <span>Find new by AI</span>
     </button>
   </div>
 
@@ -19,13 +19,13 @@
                           (selectedTypeChange)="chooseTeam($event)"/>
     </div>
 
-    @if (filteredTeams && filteredTeams.length) {
-      <div class="teams-container-teams">
-        <app-teams-by-category-actions [teamsByCategoryTeamFilters]="teamsByCategoryTeamFilters"
-                                       (changeFilters)="updatedFilters($event)"/>
 
-          <app-teams-by-category-card [teams]="filteredTeams"/>
-      </div>
-    }
+    <div class="teams-container-teams">
+      <app-teams-by-category-actions [teamsByCategoryTeamFilters]="teamsByCategoryTeamFilters"
+                                     (changeFilters)="updatedFilters($event)"/>
+      @if (filteredTeams && filteredTeams.length) {
+        <app-teams-by-category-card [teams]="filteredTeams"/>
+      }
+    </div>
   </div>
 </section>
