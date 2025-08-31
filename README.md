@@ -62,9 +62,9 @@
 ### 2. GameHeader
 - Displays **score** and **reaction time input**.
 - **Inputs:**
-  - `score$` – observable of current scores
-  - `reactionMs$` – observable of player reaction time
-  - `isRunning$` – observable if game is running
+  - `score` – current scores
+  - `reactionMs` – player reaction time
+  - `isRunning` –  if game is running
 - **Outputs:**
   - `setGameState` – triggers game start
   - `setReactionsMs` – updates reaction time
@@ -76,8 +76,8 @@
 ### 3. GameBoard
 - Displays the **10x10 game grid**.
 - **Inputs:**
-  - `field$` – observable of all cells
-  - `isRunning$` – whether the game is active
+  - `field` – all cells
+  - `isRunning` – whether the game is active
 - **Outputs:**
   - `clickedCell` – emits row/column of clicked cell
 - Buttons are disabled if cell is `idle`, `hit`, `miss`, or game is not running.
